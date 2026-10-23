@@ -1,0 +1,15 @@
+# Netlify redirects: old Cargo addresses -> new pages, so existing links keep working.
+# (GitHub Pages ignores this file.)
+/home                                   /                                       301
+/contact-form                           /about                                  301
+/hear-how-you-look,-see-how-you-sound   /works/hear-how-you-look                301
+/hear-how-you-look-see-how-you-sound    /works/hear-how-you-look                301
+/master-in-training                     /works/master-in-training               301
+/home-is-a-dwelling-path                /works/home-is-a-dwelling-path          301
+/flickring-home                         /works/flickring-home                   301
+/write-a-word-in-the-air                /works/write-a-word-in-the-air          301
+/farewell-to-my-old-pals                /works/farewell-to-my-old-pals          301
+/my-letter-2-you                        /works/my-letter-2-you                  301
+/spg                                    /works/southwark-park-stroll            301
+/waves-of-perception                    /works/waves-of-perception              301
+/bacteria                               /works/microcosm-of-identity            301
