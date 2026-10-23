@@ -33,7 +33,14 @@ a{color:inherit}
 /* ---------- top (clear skies) and bottom (terracotta) ---------- */
 .masthead{text-align:center;padding-block:56px 40px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-header.masthead{background:var(--pages);color:var(--bark)}
+header.masthead{background:transparent;color:var(--bark)}
+/* the header floats over the corridor with no background. The line and links stay at the top; on landing
+   the name rests at the bottom of the screen, and scrolling carries it up across the rooms to join them.
+   Over the terracotta floor the name turns light so it stays readable. */
+header.masthead{position:fixed;top:0;left:0;right:0;z-index:500;box-sizing:border-box;padding-block:32px 22px;will-change:transform;pointer-events:none}
+header.masthead > *{pointer-events:auto}
+header.masthead h1{will-change:transform;transition:color .3s}
+header.masthead h1.on-floor{color:var(--pages)}
 footer.masthead{background:var(--terracotta);color:var(--pages);padding-block:56px 110px}
 .masthead h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:20px;margin:0 0 6px}
 .masthead h1{font-family:var(--serif);font-weight:400;font-size:clamp(40px,7vw,68px);line-height:1.05;margin:0 0 14px;text-wrap:balance}
@@ -54,7 +61,7 @@ footer.masthead{background:var(--terracotta);color:var(--pages);padding-block:56
 
 /* ---------- the corridor ---------- */
 #corridor{position:relative}
-main{position:sticky;top:0;--top:60%;height:100vh;height:100svh;overflow:hidden;background:var(--pages)}
+main{position:sticky;top:var(--hh,0px);--top:60%;height:calc(100vh - var(--hh,0px));height:calc(100svh - var(--hh,0px));overflow:hidden;background:var(--pages)}
 /* solid terracotta under the whole floor, so no seam shows when a room blurs past */
 main::before{content:"";position:absolute;left:0;right:0;top:var(--top);bottom:0;background:var(--floor);z-index:0}
 .room{position:absolute;box-sizing:border-box;color:var(--bark);border:1px solid var(--bark);border-bottom:0;transform-origin:50% 56%;
@@ -117,7 +124,7 @@ a,button,[role="button"],.title,label{cursor:url("data:image/svg+xml,%3Csvg%20xm
 <body>
 
 
-<header class="masthead" id="top">
+<header class="masthead">
   <h2>selected works</h2>
   <h1>Yunzhi / Melissa Li</h1>
   <nav>
@@ -250,7 +257,9 @@ a,button,[role="button"],.title,label{cursor:url("data:image/svg+xml,%3Csvg%20xm
   const corridor = document.getElementById('corridor');
   const stage = document.querySelector('main');
   const door = document.getElementById('link');
-  let vw, vh, w0, h0, step, start, current = -1;
+  const header = document.querySelector('header.masthead');
+  const name = header.querySelector('h1');
+  let vw, vh, w0, h0, step, start, rise, drop, hh, current = -1;
 
   // the photo shown on hover, images/<slug>.jpg (set data-img / data-pos on an article to change it)
   const backdrop = document.createElement('div');
@@ -295,12 +304,17 @@ a,button,[role="button"],.title,label{cursor:url("data:image/svg+xml,%3Csvg%20xm
   });
 
   function measure() {
+    // the corridor sits below the header's resting place at the top of the screen
+    hh = header.offsetHeight;
+    document.documentElement.style.setProperty('--hh', hh + 'px');
     vw = stage.clientWidth; vh = stage.clientHeight;
+    rise = vh;                                            // scroll distance for the name to travel from bottom to top
+    drop = Math.max(0, vh + hh - name.offsetTop - name.offsetHeight - 24);   // how far below its place the name starts
     const narrow = vw < 700;
     w0 = narrow ? vw * 0.84 : vw * 0.62;                 // front room width
     h0 = narrow ? vh * 0.56 : Math.min(vh * 0.56, w0 * 0.46);
     step = Math.max(vh * 0.7, 380);                       // scroll distance per room
-    corridor.style.height = (vh + (N - 1) * step) + 'px';
+    corridor.style.height = (rise + hh + vh + (N - 1) * step) + 'px';
     const base = Math.max(w0 / 46, 10);
     rooms.forEach(r => {
       Object.assign(r.style, {
@@ -308,11 +322,17 @@ a,button,[role="button"],.title,label{cursor:url("data:image/svg+xml,%3Csvg%20xm
         left: (vw - w0) / 2 + 'px', top: (vh * 0.5 - 0.56 * h0) + 'px'
       });
     });
-    start = corridor.getBoundingClientRect().top + scrollY;
+    start = corridor.getBoundingClientRect().top + scrollY + rise;   // the rooms wait until the header has risen
     render();
   }
 
   function render() {
+    // header: held at the top until the corridor ends, then it scrolls away with it;
+    // the name rises from the bottom of the screen into its place in the header
+    const y = scrollY - start;
+    header.style.transform = y > (N - 1) * step ? `translateY(${((N - 1) * step - y).toFixed(1)}px)` : '';
+    const ny = drop * Math.min(1, Math.max(0, -y / rise));
+    name.style.transform = ny > 0 ? `translateY(${ny.toFixed(1)}px)` : '';
     const t = Math.min(N - 1, Math.max(0, (scrollY - start) / step));
     const edge = vw / 2 + 4;
     let prevOp = 0;
@@ -352,6 +372,9 @@ a,button,[role="button"],.title,label{cursor:url("data:image/svg+xml,%3Csvg%20xm
       r.querySelector('.description').style.pointerEvents = here ? '' : 'none';
       prevOp = op;
     });
+    // the name turns light while it sits over the terracotta floor
+    const floorY = hh + parseFloat(stage.style.getPropertyValue('--top') || vh * 0.6);
+    name.classList.toggle('on-floor', name.offsetTop + ny + name.offsetHeight / 2 > floorY);
     // hover photo: fills the top section around the hovered room; the room itself is cut out,
     // so its walls, floor and the corridor behind it stay visible
     if (litRoom) {
