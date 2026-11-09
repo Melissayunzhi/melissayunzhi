@@ -8,11 +8,23 @@ writings.html    the journal ("Don't look in here" room). Paste each entry's tex
 workshops.html   workshops you run. Copy the commented <article> block for each one.        site.css   shared look for archive, about and work pages.
 images/          photos. Name each after its work:
                    images/flickring-home.jpg     main photo: fills the top of the screen when you hover the title, archive hover, top of the work page
-                   images/flickring-home-2.jpg   more photos on the work page
-                   images/flickring-home-3.jpg   (-4, -5 ... copy a <figure> in the page for each)
+                   images/flickring-home-2.jpg   more photos on the work page -- any name starting
+                   images/flickring-home-3.jpg   "flickring-home-" or "flickring-home_" works, no fixed numbering
                    images/about.jpg              portrait on the about page
-build.py         optional: edit the WORKS list and run `python3 build.py .` to regenerate archive + work pages.
-                 (This overwrites works/*.html, so only use it before you start writing in those pages.)
+                   images/manifest.js            generated -- don't hand-edit, see make_manifest.py below
+gallery.js       builds each work's "more photos" from images/manifest.js. Run make_manifest.py (or
+                 build.py) again after adding, renaming or removing a photo so the page picks it up.
+make_manifest.py rescans images/ and rewrites images/manifest.js. Run `python3 make_manifest.py .`
+                 any time you change photos -- unlike build.py, it never touches works/*.html.
+                 To group some of a work's photos under a heading (e.g. photos from one showing),
+                 give that work photo_cats="peckham-digital" in build.py's EXTRA (comma-separated for
+                 more than one category) -- any photo whose filename contains that text anywhere
+                 (e.g. images/flickring-home-peckham-digital-1.jpg, or a plainly descriptive name like
+                 images/home-is-a-dwelling-path-memory-soup-peckham-digital.jpg) groups under the
+                 heading "Peckham Digital"; everything else stays in the plain, unheaded list.
+build.py         optional: edit the WORKS list and run `python3 build.py .` to regenerate archive + work
+                 pages (and the photo manifest). This overwrites works/*.html, so only use it before you
+                 start writing in those pages -- once you have, run make_manifest.py instead for photos.
 
 Moving a work in or out of the selected corridor:
   1. add or remove its <article class="room"> in index.html

@@ -108,7 +108,16 @@ dl.facts{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-
 dl.facts dt{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:3px;opacity:.8}
 dl.facts dd{margin:0}
 
+/* columns follow the photo count: 1 fills the width, 2 and 3 split evenly,
+   4 goes wide/narrow/narrow on top (2:1:1) with a full-width photo underneath.
+   5+ falls back to the old auto-fill tiling. */
 .more{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.more:has(> :nth-child(1):last-child){grid-template-columns:1fr}
+.more:has(> :nth-child(2):last-child){grid-template-columns:repeat(2,1fr)}
+.more:has(> :nth-child(3):last-child){grid-template-columns:repeat(3,1fr)}
+.more:has(> :nth-child(4):last-child){grid-template-columns:2fr 1fr 1fr}
+.more:has(> :nth-child(4):last-child) .ph:nth-child(4){grid-column:1 / -1}
+.group{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 10px;opacity:.8}
 .more figure{margin:0}
 .more .ph{aspect-ratio:4/3;border:1px dashed currentColor;overflow:hidden;max-width:100%}
 .more img{width:100%;height:100%;object-fit:cover;display:block}

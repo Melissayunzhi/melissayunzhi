@@ -1,6 +1,6 @@
 """Builds archive.html, about.html and works/*.html for Melissa's site.
 Edit WORKS below and run again, or edit the generated HTML files by hand."""
-import html, os, sys
+import html, json, os, sys
 ROOT = sys.argv[1] if len(sys.argv) > 1 else "/home/claude/site"
 E = html.escape
 
@@ -269,7 +269,10 @@ _set("home-is-a-dwelling-path",
   shown=["<i>Echoes and Returns</i>, On The Fringe NYC Gallery, New York, 2026",
          "Digital Design Weekend 2025, Victoria and Albert Museum, with <i>Pillow Talk</i> (Eye Compute)",
          "Peckham Digital 2025, Copeland Gallery", "<i>Some kind of home</i>, Noiascape, 2025", "<i>APT: Threshold</i>, APT, 2025",
-         "Cheeky London Launchpad, Tradestar Islington, 2025", "Camberwell College of Arts Degree Show, 2025"])
+         "Cheeky London Launchpad, Tradestar Islington, 2025", "Camberwell College of Arts Degree Show, 2025"],
+  # photos from each showing: name files images/home-is-a-dwelling-path-peckham-digital-1.jpg, -2.jpg, ...
+  # (and so on for each slug below) and they group under their own heading automatically.
+  photo_cats="peckham-digital,vanda,apt")
 
 _set("write-a-word-in-the-air",
   body=["Writing, lifted off the page. Visitors draw words in the air with a finger, and each gesture leaves a trace that keeps moving after the hand has gone.",
@@ -390,11 +393,10 @@ def work(i, seq):
 
   <!-- VIDEO: add a Vimeo link for this work in EXTRA (build.py), or paste the <iframe> here. -->
 {video}
-  <!-- MORE PHOTOS: copy a <figure> per image. -->
-  <section class="band"><div class="wrap more">
-    <figure class="ph" data-src="images/{slug}-2.jpg"><img src="../images/{slug}-2.jpg" alt=""></figure>
-    <figure class="ph" data-src="images/{slug}-3.jpg"><img src="../images/{slug}-3.jpg" alt=""></figure>
-  </div></section>
+  <!-- MORE PHOTOS: found automatically from images/manifest.js (built by build_photo_manifest() in
+       build.py from whatever's in images/). Re-run `python3 build.py .` after adding photos, or just
+       `python3 make_manifest.py .` if you don't want to touch works/*.html. -->
+  <div id="more-photos" data-slug="{slug}"></div>
 
   <section class="band"><div class="wrap">
     <nav class="pager" aria-label="More works">
@@ -405,7 +407,7 @@ def work(i, seq):
   </div></section>
 </main>
 
-""" + footer("../", [("selected", "index.html"), ("archive", "archive.html"), ("writings", "writings.html"), ("about", "about.html")]) + MISSING_JS + "</body>\n</html>\n"
+""" + footer("../", [("selected", "index.html"), ("archive", "archive.html"), ("writings", "writings.html"), ("about", "about.html")]) + MISSING_JS + '<script src="../images/manifest.js"></script>\n<script src="../gallery.js" defer></script>\n' + "</body>\n</html>\n"
 
 def simple(path_prefix, title, kicker, body_html, current):
     return head(f"{title} · Yunzhi / Melissa Li", f"{path_prefix}site.css") + masthead(kicker, path_prefix, current) + f"""<main class="band"><div class="wrap">
@@ -565,18 +567,54 @@ WORKSHOPS = """  <p class="lede-intro">Workshops I run and co-host, and talks I 
     <div class="entry-text"><p>Video interviews with students on identity and belonging opened the session, followed by collage-making and discussion for university staff on community and inclusivity at UAL.</p></div>
   </article>"""
 
-os.makedirs(f"{ROOT}/works", exist_ok=True)
-open(f"{ROOT}/archive.html", "w").write(archive())
-import glob
-for old in glob.glob(f"{ROOT}/*.html"):                      # clear tag pages from an earlier build
-    if open(old).read(3000).find('data-page="tag"') > -1: os.remove(old)
-for k, (name, n) in all_tags():
-    open(f"{ROOT}/{k}.html", "w").write(archive(k).replace("<body>", '<body data-page="tag">', 1))
-open(f"{ROOT}/about.html", "w").write(simple("", "About", "about", ABOUT, "about"))
-open(f"{ROOT}/works/cv.html", "w").write(simple("../", "CV", "cv", CV, "cv"))
-open(f"{ROOT}/writings.html", "w").write(simple("", "Writings", "don't look in here", writings_body(), "writings"))
-open(f"{ROOT}/workshops.html", "w").write(simple("", "Workshops", "workshops", WORKSHOPS, "workshops"))
-if os.path.exists(f"{ROOT}/works/dont-look-in-here.html"): os.remove(f"{ROOT}/works/dont-look-in-here.html")
-for i in range(len(WORKS)):
-    open(f"{ROOT}/works/{WORKS[i][0]}.html", "w").write(work(i, WORKS))
-print("built", len(WORKS), "work pages,", len(all_tags()), "tag pages + archive, about, cv, writings, workshops")
+# ---------------- photo manifest ----------------
+# Scans images/ for each work's extra photos and writes images/manifest.js, which gallery.js
+# reads to build the "more photos" sections -- no fixed numbering or naming scheme required.
+# A photo groups under a category (e.g. "peckham-digital" -> heading "Peckham Digital") when
+# that work's photo_cats slug appears anywhere in the filename; everything else is general.
+# Safe to re-run any time photos are added, renamed or removed -- never touches works/*.html.
+IMG_EXTS = (".jpg", ".jpeg", ".png", ".webp")
+
+def build_photo_manifest(root):
+    img_dir = os.path.join(root, "images")
+    if not os.path.isdir(img_dir):
+        return
+    files = sorted(f for f in os.listdir(img_dir) if f.lower().endswith(IMG_EXTS))
+    manifest = {}
+    for w in WORKS:
+        slug = w[0]
+        cat_slugs = [c.strip() for c in EXTRA.get(slug, {}).get("photo_cats", "").split(",") if c.strip()]
+        general, cats = [], {c: [] for c in cat_slugs}
+        for f in files:
+            base = os.path.splitext(f)[0]
+            if base == slug or not (base.startswith(slug + "-") or base.startswith(slug + "_")):
+                continue   # not this work's main photo, and not one of its extras
+            rest = base[len(slug):]
+            cat = next((c for c in cat_slugs if c in rest), None)
+            (cats[cat] if cat else general).append(f)
+        cats = {c: v for c, v in cats.items() if v}
+        if general or cats:
+            manifest[slug] = {"general": general, "categories": cats}
+    with open(os.path.join(img_dir, "manifest.js"), "w") as fh:
+        fh.write("window.PHOTO_MANIFEST = " + json.dumps(manifest, indent=1) + ";\n")
+
+def main():
+    os.makedirs(f"{ROOT}/works", exist_ok=True)
+    open(f"{ROOT}/archive.html", "w").write(archive())
+    import glob
+    for old in glob.glob(f"{ROOT}/*.html"):                      # clear tag pages from an earlier build
+        if open(old).read(3000).find('data-page="tag"') > -1: os.remove(old)
+    for k, (name, n) in all_tags():
+        open(f"{ROOT}/{k}.html", "w").write(archive(k).replace("<body>", '<body data-page="tag">', 1))
+    open(f"{ROOT}/about.html", "w").write(simple("", "About", "about", ABOUT, "about"))
+    open(f"{ROOT}/works/cv.html", "w").write(simple("../", "CV", "cv", CV, "cv"))
+    open(f"{ROOT}/writings.html", "w").write(simple("", "Writings", "don't look in here", writings_body(), "writings"))
+    open(f"{ROOT}/workshops.html", "w").write(simple("", "Workshops", "workshops", WORKSHOPS, "workshops"))
+    if os.path.exists(f"{ROOT}/works/dont-look-in-here.html"): os.remove(f"{ROOT}/works/dont-look-in-here.html")
+    for i in range(len(WORKS)):
+        open(f"{ROOT}/works/{WORKS[i][0]}.html", "w").write(work(i, WORKS))
+    build_photo_manifest(ROOT)
+    print("built", len(WORKS), "work pages,", len(all_tags()), "tag pages + archive, about, cv, writings, workshops")
+
+if __name__ == "__main__":
+    main()

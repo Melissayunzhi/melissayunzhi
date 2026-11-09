@@ -51,11 +51,10 @@
 
   <!-- VIDEO: add a Vimeo link for this work in EXTRA (build.py), or paste the <iframe> here. -->
 
-  <!-- MORE PHOTOS: copy a <figure> per image. -->
-  <section class="band"><div class="wrap more">
-    <figure class="ph" data-src="images/write-a-word-in-the-air-2.jpg"><img src="../images/write-a-word-in-the-air-2.jpg" alt=""></figure>
-    <figure class="ph" data-src="images/write-a-word-in-the-air-3.jpg"><img src="../images/write-a-word-in-the-air-3.jpg" alt=""></figure>
-  </div></section>
+  <!-- MORE PHOTOS: found automatically from images/manifest.js (built by build_photo_manifest()
+       in build.py from whatever's in images/). Re-run `python3 build.py .` after adding photos,
+       or just `python3 make_manifest.py .` if you don't want to touch works/*.html. -->
+  <div id="more-photos" data-slug="write-a-word-in-the-air"></div>
 
   <section class="band"><div class="wrap">
     <nav class="pager" aria-label="More works">
@@ -89,5 +88,7 @@ document.querySelectorAll('[data-src] img').forEach(img => {
   if (img.complete && !img.naturalWidth) mark(); else img.addEventListener('error', mark);
 });
 </script>
+<script src="../images/manifest.js"></script>
+<script src="../gallery.js" defer></script>
 </body>
 </html>
