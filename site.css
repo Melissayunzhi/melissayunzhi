@@ -2,7 +2,7 @@
    Same palette as the corridor. Flat colour only. Butter page; the top is sectioned in
    light beige (header) and the bottom in terracotta (footer), like the corridor's floor. */
 :root{
-  --terracotta:#cf541c; --butter:#ede3cf; --sky:#7ea5dc; --bark:#673c33; --pages:#f7f0e5;
+  --terracotta:#cf541c; --butter:#ffffff; --sky:#7ea5dc; --bark:#673c33; --pages:#f7f0e5;
   --bark-deep:#3d221c;  /* bark darkened for small text on clear skies */
   --bg:var(--butter); --ink:var(--bark);
   /* type: a condensed serif for names and titles, a condensed sans for everything else */
