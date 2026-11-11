@@ -80,7 +80,7 @@ BANDS = ["b-pages", "b-sky", "b-terra", "b-bark"]
 def footer(prefix, links):
     items = " ".join(f'<a href="{prefix}{h}">{n}</a>' if not h.startswith("#") else f'<a href="{h}">{n}</a>' for n, h in links)
     return f"""<footer class="masthead"><div class="wrap">
-  <h2>computational art, tattoo, curation · london</h2>
+  <h2>artist currently in london</h2>
   <h1><a href="{prefix}index.html">Yunzhi / Melissa Li</a></h1>
   <nav class="site">{items}</nav>
   <nav class="site reach">{reach(prefix)}</nav>
