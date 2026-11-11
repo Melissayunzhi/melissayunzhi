@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>UE5 · Archive · Yunzhi / Melissa Li</title>
+<!-- share -->
+<meta name="description" content="Works tagged archive, ue5, by Yunzhi / Melissa Li.">
+<meta property="og:title" content="UE5 &#183; Archive &#183; Yunzhi / Melissa Li">
+<meta property="og:description" content="Works tagged archive, ue5, by Yunzhi / Melissa Li.">
+<meta property="og:image" content="https://melissayunzhi.li/images/southwark-park-stroll.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico">
+<!-- /share -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans+Condensed:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono&display=swap">
 <link rel="stylesheet" href="site.css">
@@ -23,7 +32,7 @@
 <section class="band"><div class="wrap">
 <h3 class="year">2024</h3>
 <ul class="list">
-  <li data-slug="southwark-park-stroll"><span class="when">Dec 2024 – Feb 2025</span><a class="t" href="works/southwark-park-stroll.html"><span class="sel" title="selected work"></span>Southwark Park Stroll</a><span class="d">Site-specfic installation at Southwark Park Galleries - Dilston Gallery, exploring the themes of interconnectedness and entanglement of species.</span><span class="c"><a href="3d-scanning.html">3D Scanning</a>, <a href="ue5.html">UE5</a>, <a href="installation.html">Installation</a></span></li>
+  <li data-slug="southwark-park-stroll"><span class="when">Dec 2024 – Feb 2025</span><a class="t" href="works/southwark-park-stroll.html"><span class="sel" title="selected work"></span>Southwark Park Stroll</a><span class="d">Site-specific installation at Southwark Park Galleries - Dilston Gallery, exploring the themes of interconnectedness and entanglement of species.</span><span class="c"><a href="3d-scanning.html">3D Scanning</a>, <a href="ue5.html">UE5</a>, <a href="installation.html">Installation</a></span></li>
 </ul>
 </div></section>
 <section class="band"><div class="wrap">
@@ -60,7 +69,8 @@ document.querySelectorAll('.list li').forEach(li => {
     if (!fine) return;
     pimg.onload = () => peek.classList.add('on');
     pimg.onerror = () => peek.classList.remove('on');
-    pimg.src = 'images/' + li.dataset.slug + '.jpg';
+    peek.classList.toggle('bare', !!li.dataset.peek);   // data-peek: a logo, shown on its own
+    pimg.src = li.dataset.peek || ('images/' + li.dataset.slug + '.jpg');
   });
   a.addEventListener('pointermove', e => {
     const w = peek.offsetWidth, h = peek.offsetHeight;

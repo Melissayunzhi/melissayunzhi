@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Phreaking Collective · Yunzhi / Melissa Li</title>
+<!-- share -->
+<meta name="description" content="Phreaking Collective (Since Aug 2025) by Yunzhi / Melissa Li. Phreaking Collective is a group of emerging computational artists that organise self-initiated exhibitions, events, and talks with guest speakers.">
+<meta property="og:title" content="Phreaking Collective &#183; Yunzhi / Melissa Li">
+<meta property="og:description" content="Phreaking Collective (Since Aug 2025) by Yunzhi / Melissa Li. Phreaking Collective is a group of emerging computational artists that organise self-initiated exhibitions, events, and talks with guest speakers.">
+<meta property="og:image" content="https://melissayunzhi.li/images/phreaking-collective.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.ico">
+<!-- /share -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans+Condensed:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono&display=swap">
 <link rel="stylesheet" href="../site.css">
@@ -23,38 +32,33 @@
     <div class="work-head">
       <p class="kicker">Since Aug 2025</p>
       <h1>Phreaking Collective</h1>
-      <p class="lede">Co-founder, artist lead and co-curator of a collective of emerging computational artists.</p>
     </div>
 
-    <!-- MAIN PHOTO: put the file at images/phreaking-collective.jpg (or change the src). -->
+    <!-- MAIN PHOTO: from phreaking.co.uk. The preview on the archive is images/phreaking-collective.jpg -->
     <div class="doorway">
-      <div class="frame" data-src="images/phreaking-collective.jpg">
+      <div class="frame" data-src="images/works/phreaking-collective/01.jpg" style="aspect-ratio:3/2">
         <span class="wall">Since Aug 2025</span>
-        <img src="../images/phreaking-collective.jpg" alt="Phreaking Collective">
+        <img src="../images/works/phreaking-collective/01.jpg" alt="Visitors walking through BitRot, a Phreaking Collective exhibition at Copeland Gallery">
       </div>
     </div>
   </div>
 
   <section class="band"><div class="wrap body">
-    <div class="text">
-      <p>A group of emerging computational artists, co-founded in 2025. Phreaking organises self-initiated exhibitions, film nights, open projector evenings and talks with guest speakers.</p>
-      <p>As artist lead and co-curator, Melissa has taken exhibitions from first idea through install and deinstall: <i>BitRot</i> at Copeland Gallery, <i>Does Cloud Compute (ever) Precipitate?</i> at ANNEX by the Koppel Project, and <i>Can We Start Again?</i> at the old Archbishop Tenison's School site near The Oval, a show threading digital ecology, technological acceleration and the history of the site.</p>
+    <div class="text flow">
+      <img class="logo" src="../images/works/phreaking-collective/logo.png" alt="Phreaking Collective" width="732" height="273">
+      <p>Phreaking Collective is a group of emerging computational artists that organise self-initiated exhibitions, events, and talks with guest speakers.</p>
+      <p><a href="https://phreaking.co.uk/" target="_blank" rel="noopener">phreaking.co.uk</a></p>
     </div>
     <dl class="facts">
       <dt>Date</dt><dd>Since Aug 2025</dd>
       <dt>Tags</dt><dd><a href="../curation.html">Curation</a></dd>
-      <dt>Materials</dt><dd>Curation, production, visual identity</dd>
-      <dt>Shown at</dt><dd><i>BitRot</i>, Copeland Gallery, 2025<br><i>Does Cloud Compute (ever) Precipitate?</i>, ANNEX by the Koppel Project, 2026<br><i>Can We Start Again?</i>, old Archbishop Tenison's School, the Oval</dd>
-      <dt>Links</dt><dd><a href="https://www.instagram.com/phreaking_collective/">@phreaking_collective</a></dd>
+      <dt>Website</dt><dd><a href="https://phreaking.co.uk/" target="_blank" rel="noopener">phreaking.co.uk</a></dd>
     </dl>
   </div></section>
 
-  <!-- VIDEO: add a Vimeo link for this work in EXTRA (build.py), or paste the <iframe> here. -->
-
-  <!-- MORE PHOTOS: found automatically from images/manifest.js (built by build_photo_manifest()
-       in build.py from whatever's in images/). Re-run `python3 build.py .` after adding photos,
-       or just `python3 make_manifest.py .` if you don't want to touch works/*.html. -->
-  <div id="more-photos" data-slug="phreaking-collective"></div>
+  <section class="band"><div class="wrap flow">
+      <div class="gallery"><figure class="shot" style="--r:3/2"><img src="../images/works/phreaking-collective/02.jpg" alt="Installation view of BitRot: a blue hanging sculpture, small screens on the walls and works on plinths in a darkened gallery" loading="lazy" width="1800" height="1200"></figure><figure class="shot" style="--r:1308/872"><img src="../images/works/phreaking-collective/03.jpg" alt="BitRot title over a glitched, smeared photograph of a room" loading="lazy" width="1308" height="872"></figure><figure class="shot" style="--r:1280/854"><img src="../images/works/phreaking-collective/04.jpg" alt="Does Cloud Compute (ever) Precipitate? title on a pixelated blue sky with clouds" loading="lazy" width="1280" height="854"></figure><figure class="shot" style="--r:16/9"><img src="../images/works/phreaking-collective/05.jpg" alt="Can we start again? title over drifting coloured lines on black" loading="lazy" width="1800" height="1012"></figure><figure class="shot" style="--r:1024/1280"><img src="../images/works/phreaking-collective/06.jpg" alt="Open Projector poster: a space to share and talk about work in progress" loading="lazy" width="1024" height="1280"></figure><figure class="shot" style="--r:1080/1350"><img src="../images/works/phreaking-collective/07.webp" alt="Mixed Signals poster" loading="lazy" width="1080" height="1350"></figure></div>
+  </div></section>
 
   <section class="band"><div class="wrap">
     <nav class="pager" aria-label="More works">
@@ -88,8 +92,6 @@ document.querySelectorAll('[data-src] img').forEach(img => {
   if (img.complete && !img.naturalWidth) mark(); else img.addEventListener('error', mark);
 });
 </script>
-<script src="../images/manifest.js"></script>
-<script src="../gallery.js" defer></script>
 <script src="../media.js" defer></script>
 </body>
 </html>

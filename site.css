@@ -8,7 +8,7 @@
   /* the header takes the landing page's colours (keep in step with --pages / --bark in index.html) */
   --head-bg:#224f77; --head-ink:#ffc1b3;
   /* the footer takes the landing page's floor (keep in step with --terracotta in index.html) */
-  --foot-bg:#e4bda9; --foot-ink:#224f77;
+  --foot-bg:#e4bda9; --foot-ink:#163a5c;
   /* type: a condensed serif for names and titles, a condensed sans for everything else */
   --serif:"Instrument Serif", "Times New Roman", Times, serif;
   --text:"IBM Plex Sans Condensed", "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
@@ -86,6 +86,9 @@ nav.tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:28px 
   border:1px solid var(--bark);border-bottom:0;background:var(--pages)}
 .peek img{width:100%;height:100%;object-fit:cover;display:block}
 .peek.on{opacity:1}
+/* rows with data-peek (the collectives' logos): no frame, no background, the whole logo */
+.peek.bare{border:0;background:none}
+.peek.bare img{object-fit:contain}
 
 /* ---------- a work page ---------- */
 .work-head{padding-block:32px 28px}
@@ -171,6 +174,9 @@ dl.facts dd{margin:0}
 .flow .gallery .clip video{max-height:none}
 .flow td{padding:2px 12px 2px 0;vertical-align:top}
 
+/* a collective's logo above its text (Phreaking Collective, cranberry*lemonade) */
+.text .logo{display:block;width:auto;max-width:min(320px,100%);height:auto;margin:0 0 20px}
+.text .logo.logo-small{max-height:110px}
 /* portrait main photos show whole inside the frame */
 .doorway .frame[data-fit="contain"] img{object-fit:contain}
 

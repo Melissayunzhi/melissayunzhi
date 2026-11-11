@@ -115,7 +115,7 @@
     const s = Math.min(1, (innerWidth - PAD_W * 2) / nw, (innerHeight - PAD_H * 2) / nh);
     return nw * s;
   };
-  const canZoom = img => !img.closest('a, .doorway') && img.getBoundingClientRect().width > 0 &&
+  const canZoom = img => !img.closest('a, .doorway') && !img.classList.contains('logo') && img.getBoundingClientRect().width > 0 &&
     largeWidth(img) > img.getBoundingClientRect().width * 1.15;
   const markAll = () => document.querySelectorAll('.flow img').forEach(img => img.classList.toggle('zoomable', canZoom(img)));
   document.querySelectorAll('.flow img').forEach(img => { if (!img.complete) img.addEventListener('load', () => img.classList.toggle('zoomable', canZoom(img)), { once: true }); });

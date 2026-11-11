@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Curation · Archive · Yunzhi / Melissa Li</title>
+<!-- share -->
+<meta name="description" content="Works tagged archive, curation, by Yunzhi / Melissa Li.">
+<meta property="og:title" content="Curation &#183; Archive &#183; Yunzhi / Melissa Li">
+<meta property="og:description" content="Works tagged archive, curation, by Yunzhi / Melissa Li.">
+<meta property="og:image" content="https://melissayunzhi.li/images/phreaking-collective.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico">
+<!-- /share -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans+Condensed:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono&display=swap">
 <link rel="stylesheet" href="site.css">
@@ -23,7 +32,7 @@
 <section class="band"><div class="wrap">
 <h3 class="year">Elsewhere</h3>
 <ul class="list">
-  <li data-slug="phreaking-collective"><span class="when">Since Aug 2025</span><a class="t" href="works/phreaking-collective.html">Phreaking Collective</a><span class="d"></span><span class="c"><a href="curation.html">Curation</a></span></li>
+  <li data-slug="phreaking-collective" data-peek="images/works/phreaking-collective/logo.png"><span class="when">Since Aug 2025</span><a class="t" href="works/phreaking-collective.html">Phreaking Collective</a><span class="d">Phreaking Collective is a group of emerging computational artists that organise self-initiated exhibitions, events, and talks with guest speakers.</span><span class="c"><a href="curation.html">Curation</a></span></li>
 </ul>
 </div></section>
 </main>
@@ -54,7 +63,8 @@ document.querySelectorAll('.list li').forEach(li => {
     if (!fine) return;
     pimg.onload = () => peek.classList.add('on');
     pimg.onerror = () => peek.classList.remove('on');
-    pimg.src = 'images/' + li.dataset.slug + '.jpg';
+    peek.classList.toggle('bare', !!li.dataset.peek);   // data-peek: a logo, shown on its own
+    pimg.src = li.dataset.peek || ('images/' + li.dataset.slug + '.jpg');
   });
   a.addEventListener('pointermove', e => {
     const w = peek.offsetWidth, h = peek.offsetHeight;

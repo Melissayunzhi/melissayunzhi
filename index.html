@@ -4,9 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Yunzhi / Melissa Li</title>
+<!-- share -->
+<meta name="description" content="Yunzhi / Melissa Li, artist currently in london.">
+<meta property="og:title" content="Yunzhi / Melissa Li">
+<meta property="og:description" content="Yunzhi / Melissa Li, artist currently in london.">
+<meta property="og:image" content="https://melissayunzhi.li/images/master-in-training.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.ico">
+<!-- /share -->
 <meta name="description" content="Computational artist Yunzhi Melissa Li. Walk through the works, one room at a time.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans+Condensed:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans+Condensed:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <style>
 /* LAYOUT: a one-point-perspective corridor. Each selected work is a room nested inside
    the one before it; scrolling walks forward through them. Title top-left, credit on the
@@ -15,6 +24,7 @@
    walk past blur away. Flat colour only. One fixed palette, by choice. */
 :root{
   --terracotta:#e4bda9; --butter:#ffffff; --sky:#7ea5dc; --bark:#ffc1b3; --pages:#224f77;
+  --on-floor:#163a5c;  /* text on the floor and footer: a darker blue, for contrast */
   /* previous palette: --terracotta:#cf541c; --bark:#362d2b; --pages:#eae8e4; */
   --bark-deep:#3d221c;  /* bark darkened for small text on clear skies */
   --bg:var(--butter); --ink:var(--bark); --floor:var(--terracotta);
@@ -47,7 +57,7 @@ header.masthead h1.on-floor{color:var(--pages)}
 .masthead h2,.masthead nav{transition:opacity .3s}
 header.masthead.on-img h2,header.masthead.on-img nav{opacity:0;pointer-events:none}
 header.masthead.on-img h1{color:var(--pages)}
-footer.masthead{background:var(--terracotta);color:var(--pages);padding-block:56px 110px}
+footer.masthead{background:var(--terracotta);color:var(--on-floor);padding-block:56px 110px}
 .masthead h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:20px;margin:0 0 6px}
 .masthead h1{font-family:var(--serif);font-weight:400;font-size:clamp(40px,7vw,68px);line-height:1.05;margin:0 0 14px;text-wrap:balance}
 .masthead nav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:17px}
@@ -84,7 +94,7 @@ main::before{content:"";position:absolute;left:0;right:0;top:var(--top);bottom:0
 /* the floor text sits on a softly blurred panel so it reads over the rooms behind */
 .description{position:absolute;z-index:2;text-decoration:none;pointer-events:auto;left:50%;bottom:.45em;transform:translateX(-50%);display:grid;justify-items:center;gap:.5em;
   text-align:center;white-space:nowrap}
-.cap{font-family:var(--serif);font-size:.72em;font-style:italic;color:var(--pages)}  /* sits on the terracotta floor */
+.cap{font-family:var(--serif);font-size:.72em;font-style:italic;font-weight:700;color:var(--on-floor)}  /* sits on the terracotta floor */
 
 /* hover a title: its photo fills the top section around that room, down to the floor;
    the room itself is cut out of the photo */
@@ -115,7 +125,7 @@ main::before{content:"";position:absolute;left:0;right:0;top:var(--top);bottom:0
 
 /* ---------- small per-room previews ---------- */
 /* one element from each work as ASCII, light beige on the terracotta floor */
-.art{margin:0;font-family:var(--mono);font-size:.5em;line-height:1.12;color:var(--pages);text-align:left;white-space:pre}
+.art{margin:0;font-family:var(--mono);font-weight:600;font-size:.5em;line-height:1.12;color:var(--on-floor);text-align:left;white-space:pre}
 .art b{font-weight:400;animation:blink 1.6s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 .art i{font-style:normal;animation:flick 4s steps(1) infinite}
@@ -205,7 +215,7 @@ a,button,[role="button"],.title,label{cursor:url("data:image/svg+xml,%3Csvg%20xm
       <a class="description" href="works/southwark-park-stroll.html" tabindex="-1"><pre class="art" aria-hidden="true">   .---------.
   / +    o    \
  |      o o    |
-  \__/-----\__/</pre><span class="cap">Site-specfic installation at Southwark Park Galleries - Dilston Gallery, exploring the themes of interconnectedness and entanglement of species.</span></a>
+  \__/-----\__/</pre><span class="cap">Site-specific installation at Southwark Park Galleries - Dilston Gallery, exploring the themes of interconnectedness and entanglement of species.</span></a>
       <p class="author">Dec 2024 – Feb 2025</p>
     </article>
 
@@ -381,7 +391,7 @@ a,button,[role="button"],.title,label{cursor:url("data:image/svg+xml,%3Csvg%20xm
       }
       // focus: rooms you walk past stay sharp and simply fade; the room you stand in and the one
       // right behind it are sharp; a slight blur only starts further back (values are on-screen pixels)
-      const soft = past > 0 ? 0 : (i !== cur && z > 2.2) ? Math.min(1.8, (z - 2.2) * 0.6) : 0;
+      const soft = 0;   // no blur: rooms further back stay sharp so their text stays readable
       r.style.filter = soft > 0 ? `blur(${(soft * z).toFixed(2)}px)` : 'none';
       r.style.transform = `scale(${1 / z})`;
       r.style.zIndex = r === litRoom ? 400 : 100 + N - i;

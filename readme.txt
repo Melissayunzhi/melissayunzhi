@@ -1,50 +1,47 @@
 melissayunzhi.li
 
+Every page is plain HTML: edit the file and save. There is no build step.
+
+PAGES
 index.html       SELECTED WORKS: the corridor of rooms. Each <article class="room"> is one room, front to back.
-archive.html     every work, as a plain index by year.
-works/*.html     one standalone page per work. Replace "Write about this work here." and add photos.
+archive.html     every work, as a plain index by year. Hover a row to see its preview photo.
+works/*.html     one page per work, plus the freelance sub-pages and the CV (works/cv.html).
 about.html       about page.
-writings.html    the journal ("Don't look in here" room). Paste each entry's text into its <div class="entry-text">.
-workshops.html   workshops you run. Copy the commented <article> block for each one.        site.css   shared look for archive, about and work pages.
-images/          photos. Name each after its work:
-                   images/flickring-home.jpg     main photo: fills the top of the screen when you hover the title, archive hover, top of the work page
-                   images/flickring-home-2.jpg   more photos on the work page -- any name starting
-                   images/flickring-home-3.jpg   "flickring-home-" or "flickring-home_" works, no fixed numbering
-                   images/about.jpg              portrait on the about page
-                   images/manifest.js            generated -- don't hand-edit, see make_manifest.py below
-gallery.js       builds each work's "more photos" from images/manifest.js. Run make_manifest.py (or
-                 build.py) again after adding, renaming or removing a photo so the page picks it up.
-make_manifest.py rescans images/ and rewrites images/manifest.js. Run `python3 make_manifest.py .`
-                 any time you change photos -- unlike build.py, it never touches works/*.html.
-                 To group some of a work's photos under a heading (e.g. photos from one showing),
-                 give that work photo_cats="peckham-digital" in build.py's EXTRA (comma-separated for
-                 more than one category) -- any photo whose filename contains that text anywhere
-                 (e.g. images/flickring-home-peckham-digital-1.jpg, or a plainly descriptive name like
-                 images/home-is-a-dwelling-path-memory-soup-peckham-digital.jpg) groups under the
-                 heading "Peckham Digital"; everything else stays in the plain, unheaded list.
-build.py         optional: edit the WORKS list and run `python3 build.py .` to regenerate archive + work
-                 pages (and the photo manifest). This overwrites works/*.html, so only use it before you
-                 start writing in those pages -- once you have, run make_manifest.py instead for photos.
+writings.html    the journal ("Don't look in here" room), one <article class="entry"> per note.
+workshops.html   workshops and talks, one <article class="entry"> each.
+installation.html, web-art.html, ...   tag pages: the archive filtered to one tag.
+404.html         shown for any address that doesn't exist.
 
-Moving a work in or out of the selected corridor:
-  1. add or remove its <article class="room"> in index.html
-  2. in build.py set the last value of its line to True/False (this sets the marker in the archive), or edit archive.html by hand.
+LOOK
+site.css         shared look for every page except the landing page. Colours at the top:
+                   --head-bg / --head-ink   header (matches the landing page)
+                   --foot-bg / --foot-ink   footer (matches the landing page's floor)
+index.html       the landing page has its own colours at the top of its <style>:
+                   --pages (background), --bark (text), --terracotta (floor)
+                 If you change those, update --head-* and --foot-* in site.css to match.
+media.js         on work / writings / workshops pages: click a photo to see it larger (only photos
+                 that would actually get bigger), and the moshing photo sequences
+                 (<div class="gallery erode">; add data-mode="fade" for a plain cross-fade).
 
-To publish: drag this folder into Netlify, or push it to a GitHub Pages repo,
-then point melissayunzhi.li at it from your domain settings.
+PHOTOS
+images/<slug>.jpg              the PREVIEW photo: landing-page room hover and archive hover.
+images/works/<slug>/01.jpg ... the work page's photos. 01 is the main photo at the top of the page.
+images/writings/, images/workshops/   photos for those pages.
+images/writings.png            the "Don't look in here" room image (shown inside the room: data-fit="inside").
+files/                         PDFs (CV and others) linked from the pages.
 
-Video: open build.py, find EXTRA, and paste a Vimeo link into a work's video="" (e.g. video="https://vimeo.com/123456789"),
-       then run `python3 build.py .`  Or paste Vimeo's embed <iframe> straight into the work's page where it says VIDEO.
-Cursor: the pixel arrow and hand are at the bottom of site.css (and in index.html). Swap the data: URLs for your own
-       cursor image (PNG or SVG, up to 128 x 128 px) if you want your exact Cargo cursor.
-Phones: resting in a room for about a second shows its photo; scrolling hides it. Desktop uses hover.
+To add a photo to a work page, put it in images/works/<slug>/ and copy a <figure> inside one of
+the page's <div class="gallery"> blocks. Keep width="" height="" and style="--r:width/height" right,
+so the gallery rows line up. Write what the photo shows in alt="".
 
-Tags: every category on a work becomes a tag page (installation.html, web-art.html, ...), built automatically
-      by build.py from the categories in WORKS. Netlify and GitHub Pages serve them as /installation, /web-art.
-      Add a category to a work, run `python3 build.py .`, and its tag page appears.
+VIDEO
+Vimeo: copy an existing <figure class="clip"><div class="video" style="--ar:1920/1080"><iframe ...>
+block and change the video number and --ar (the video's width/height). Vimeo videos autoplay muted.
 
-Logos: images/icons/instagram.png, are-na.png, linkedin.png are your official logos. Replace a file to change it;
-       the site recolours them to match. (They show once the site is on a web host, not from files opened on your computer.)
-_redirects: for Netlify. Sends old Cargo addresses (/flickring-home, /spg, /bacteria ...) to the new pages.
+SHARING
+Each page's <head> has a description and a preview image for link previews (og:description, og:image).
+favicon.ico is the tab icon.
 
-CV:   works/cv.html is built from your CV (build.py, CV = ...). Put cv.pdf in this folder and a "Download as PDF" link appears.
+PUBLISHING
+Drag this folder into Netlify, or push it to a GitHub Pages repo, then point melissayunzhi.li at it.
+_redirects (Netlify) sends old Cargo addresses (/spg, /bacteria, /cv-1 ...) to the new pages.
