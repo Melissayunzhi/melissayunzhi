@@ -41,6 +41,8 @@ footer nav.site a.mail:hover{background:var(--foot-ink);color:var(--foot-bg)}
 nav.site{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:17px}
 nav.site a[aria-current]{text-decoration:none;font-style:italic}
 nav.site{align-items:center}
+/* instagram, are.na, linkedin and email stay together on one line when the menu wraps on phones */
+nav.site .social{display:inline-flex;flex-wrap:nowrap;align-items:center;gap:18px}
 nav.site a.icon,nav.site a.mail{text-decoration:none;display:inline-flex;align-items:center;gap:.4em}
 nav.site svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round}
 nav.site a.icon:hover svg,nav.site a.mail:hover svg{stroke-width:2.2}
@@ -157,6 +159,8 @@ dl.facts dd{margin:0}
 /* ---------- content carried over from the old site: text, photos, videos in their original order ---------- */
 .flow > *{margin:0 0 1em}
 .flow > p,.flow > h2,.flow > ul,.flow > ol,.flow > blockquote,.flow > table{max-width:62ch}
+/* short lines (labels between galleries, e.g. "Show, Gallery, 9 May 2025") use the full width so they stay on one line */
+.flow > p.label{max-width:none}
 .flow > h2{font-family:var(--serif);font-weight:400;font-size:clamp(26px,3vw,34px);line-height:1.15;margin-top:1.2em}
 .flow > figure,.flow > .gallery{margin-block:32px}
 .flow figure{margin:0}

@@ -42,6 +42,11 @@ SHARING
 Each page's <head> has a description and a preview image for link previews (og:description, og:image).
 favicon.ico is the tab icon.
 
+VISITOR STATS
+Google Analytics (G-Y7ZRDY07BQ, the same account as the old Cargo site) is in every page's <head>,
+between <!-- analytics --> and <!-- /analytics -->. It runs cookie-free (consent mode, analytics_storage
+denied), so there is no cookie notice. To remove Analytics, delete that block from each page.
+
 PUBLISHING
 Drag this folder into Netlify, or push it to a GitHub Pages repo, then point melissayunzhi.li at it.
 _redirects (Netlify) sends old Cargo addresses (/spg, /bacteria, /cv-1 ...) to the new pages.

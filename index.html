@@ -41,6 +41,9 @@
   color-scheme:light;
 }
 html{overflow-x:clip}
+/* the canvas behind the page is the floor colour: what iPhone / iPad Safari shows when you bounce past the
+   bottom and tints its bottom bar with. The page itself (body) keeps the blue, so the header is unchanged. */
+html{background:var(--terracotta)}
 body{margin:0;background:var(--pages);color:var(--bark);font-family:var(--text);overflow-x:clip}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--bark);outline-offset:3px}
@@ -69,6 +72,8 @@ footer.masthead{background:var(--terracotta);color:var(--on-floor);padding-block
 .masthead nav a:hover,.title:hover{text-decoration-style:solid}
 .masthead nav a[aria-current]{text-decoration:none;font-style:italic}
 .masthead nav{align-items:center}
+/* instagram, are.na, linkedin and email stay together on one line when the menu wraps on phones */
+.masthead nav .social{display:inline-flex;flex-wrap:nowrap;align-items:center;gap:18px}
 .masthead nav a.icon,.masthead nav a.mail{text-decoration:none;display:inline-flex;align-items:center;gap:.4em}
 .masthead nav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round}
 .masthead nav a.icon:hover svg,.masthead nav a.mail:hover svg{stroke-width:2.2}
@@ -81,7 +86,8 @@ footer.masthead{background:var(--terracotta);color:var(--on-floor);padding-block
 
 /* ---------- the corridor ---------- */
 #corridor{position:relative}
-main{position:sticky;top:var(--hh,0px);--top:60%;height:calc(100vh - var(--hh,0px));height:calc(100svh - var(--hh,0px));overflow:hidden;background:var(--pages)}
+/* 100dvh follows iPhone / iPad Safari's toolbar as it shows and hides, so the corridor always reaches the bottom */
+main{position:sticky;top:var(--hh,0px);--top:60%;height:calc(100vh - var(--hh,0px));height:calc(100svh - var(--hh,0px));height:calc(100dvh - var(--hh,0px));overflow:hidden;background:var(--pages)}
 /* solid terracotta under the whole floor, so no seam shows when a room blurs past */
 main::before{content:"";position:absolute;left:0;right:0;top:var(--top);bottom:0;background:var(--floor);z-index:0}
 .room{position:absolute;box-sizing:border-box;color:var(--bark);border:1px solid var(--bark);border-bottom:0;transform-origin:50% 56%;
@@ -143,6 +149,19 @@ a,button,[role="button"],.title,label{cursor:url("data:image/svg+xml,%3Csvg%20xm
 
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
+<!-- analytics -->
+<!-- Google tag (gtag.js), cookie-free: consent mode keeps analytics cookies off, so no consent notice is needed -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y7ZRDY07BQ"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', 'G-Y7ZRDY07BQ');
+</script>
+<!-- /analytics -->
 </head>
 <body>
 
@@ -156,10 +175,10 @@ a,button,[role="button"],.title,label{cursor:url("data:image/svg+xml,%3Csvg%20xm
     <a href="workshops.html">workshops</a>
     <a href="about.html">about</a>
     <a href="works/cv.html">cv</a>
-    <a class="icon" href="https://www.instagram.com/melissayunzhi/" aria-label="instagram" title="instagram" data-icon="images/icons/instagram.png"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13.5" r="3.5"/></svg></a>
+    <span class="social"><a class="icon" href="https://www.instagram.com/melissayunzhi/" aria-label="instagram" title="instagram" data-icon="images/icons/instagram.png"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13.5" r="3.5"/></svg></a>
     <a class="icon" href="https://www.are.na/melissayunzhi-li/channels" aria-label="are.na" title="are.na" data-icon="images/icons/are-na.png"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg></a>
     <a class="icon" href="https://www.linkedin.com/in/yunzhi-li-593503200/" aria-label="linkedin" title="linkedin" data-icon="images/icons/linkedin.png"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="8" width="17" height="11.5"/><path d="M9 8V5.5h6V8M3.5 13h17"/></svg></a>
-    <a class="mail" href="mailto:melissayunzhi@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg><span>email me</span></a>
+    <a class="mail" href="mailto:melissayunzhi@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg><span>email me</span></a></span>
   </nav>
 </header>
 
