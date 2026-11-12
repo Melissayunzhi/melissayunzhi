@@ -6,6 +6,7 @@ PAGES
 index.html       SELECTED WORKS: the corridor of rooms. Each <article class="room"> is one room, front to back.
 archive.html     every work, as a plain index by year. Hover a row to see its preview photo.
 works/*.html     one page per work, plus the freelance sub-pages and the CV (works/cv.html).
+                 The right column of a work page (<dl class="facts">) holds Date, Medium, Dimensions and Tags.
 about.html       about page.
 writings.html    the journal ("Don't look in here" room), one <article class="entry"> per note.
 workshops.html   workshops and talks, one <article class="entry"> each.
