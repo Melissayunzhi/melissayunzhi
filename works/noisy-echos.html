@@ -110,7 +110,7 @@ document.querySelectorAll('a.icon[data-icon]').forEach(a => {
 // always open a page at the top
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 if (!location.hash) { scrollTo(0, 0); addEventListener('load', () => scrollTo(0, 0), { once: true }); }
-document.querySelectorAll('[data-src] img').forEach(img => {
+document.querySelectorAll('[data-src] img:not([data-rot])').forEach(img => {
   const box = img.parentNode;
   const mark = () => box.classList.add('missing');
   if (img.complete && !img.naturalWidth) mark(); else img.addEventListener('error', mark);

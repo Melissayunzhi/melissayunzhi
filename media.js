@@ -1,7 +1,7 @@
 // Photos on work / writings / workshops pages.
 // 1. Click a photo to see it large; click anywhere to close. Only photos that would get bigger open.
 // 2. <div class="gallery erode"> plays its photos as one sequence, each step moshing into the next
-//    (add data-mode="fade" to that div for a plain cross-fade instead).
+//    (add data-mode="fade" to that div for a plain cross-fade, or data-mode="cut" for no effect at all).
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -9,7 +9,7 @@
   document.querySelectorAll('.gallery.erode').forEach(gal => {
     const imgs = [...gal.querySelectorAll('img')];
     if (imgs.length < 2 || reduce) return;          // reduced motion: keep the plain photo grid
-    const mode = gal.dataset.mode === 'fade' ? 'fade' : 'mosh';
+    const mode = ['fade', 'cut'].includes(gal.dataset.mode) ? gal.dataset.mode : 'mosh';
     const first = imgs[0];
     const W = 720, H = Math.round(W * (first.getAttribute('height') / first.getAttribute('width') || 0.75));
 
@@ -53,7 +53,8 @@
     // one transition from frame a to frame b
     const transition = (a, b, done) => {
       cancelAnimationFrame(raf);
-      const T = mode === 'fade' ? 900 : 1500, t0 = performance.now(), B = 16;
+      if (mode === 'cut') { ctx.drawImage(b, 0, 0); done && done(); return; }   // no effect: straight to the next photo
+      const T =mode === 'fade' ? 900 : 1500, t0 = performance.now(), B = 16;
       // a slow "motion field": each block row/column drifts a little, like broken motion vectors
       const vx = Array.from({ length: Math.ceil(H / B) }, () => (Math.random() - .5) * 18);
       const vy = Array.from({ length: Math.ceil(W / B) }, () => (Math.random() - .5) * 10);
@@ -85,7 +86,9 @@
     const schedule = () => {
       clearTimeout(timer);
       if (!visible) return;
-      timer = setTimeout(() => go((idx + 1) % frames.length), idx === frames.length - 1 ? 2600 : 1500);
+      // with no transition, each photo is held longer so the pace stays about the same
+      const hold = mode === 'cut' ? 2500 : 1500;
+      timer = setTimeout(() => go((idx + 1) % frames.length), idx === frames.length - 1 ? hold + 1100 : hold);
     };
     const go = (i, user) => {
       if (!frames.length || i === idx) return;
@@ -103,6 +106,32 @@
       }), { threshold: .3 }).observe(box);
     });
 
+  });
+
+  /* ---------- rotating main photo: <div class="frame rotate"> with several <img> ---------- */
+  // The first photo shows straight away; the others load one at a time (data-rot) as they come up.
+  // Cross-fades every 3.5 s while on screen; click to skip to the next one.
+  document.querySelectorAll('.frame.rotate').forEach(frame => {
+    const imgs = [...frame.querySelectorAll('img')];
+    if (imgs.length < 2) return;
+    let idx = 0, timer = null, visible = false;
+    const load = img => { if (img.dataset.rot) { img.src = img.dataset.rot; delete img.dataset.rot; } };
+    load(imgs[1]);
+    const next = () => {
+      const n = (idx + 1) % imgs.length;
+      const img = imgs[n];
+      const show = () => {
+        imgs[idx].classList.remove('on'); img.classList.add('on'); idx = n;
+        load(imgs[(idx + 1) % imgs.length]);
+        schedule();
+      };
+      load(img);
+      if (img.complete && img.naturalWidth) show(); else img.addEventListener('load', show, { once: true });
+    };
+    const schedule = () => { clearTimeout(timer); if (visible && !reduce) timer = setTimeout(next, 3500); };
+    frame.addEventListener('click', () => { clearTimeout(timer); next(); });
+    new IntersectionObserver(es => es.forEach(e => { visible = e.isIntersecting; visible ? schedule() : clearTimeout(timer); }),
+      { threshold: .3 }).observe(frame);
   });
 
   /* ---------- large view: click a photo, click anywhere to close ---------- */

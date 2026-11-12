@@ -104,6 +104,10 @@ nav.tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:28px 
 .body .doorway::after{left:-16px;width:calc(100% + 32px)}  /* in a column: a short floor line under the frame */
 .doorway .frame{position:relative;border:1px solid currentColor;border-bottom:0;aspect-ratio:16/9;max-width:100%;overflow:hidden;background:var(--pages)}
 .doorway img{width:100%;height:100%;object-fit:cover;display:block}
+/* rotating main photo (media.js): the photos sit on top of each other and cross-fade */
+.doorway .frame.rotate{cursor:pointer}
+.doorway .frame.rotate img{position:absolute;inset:0;opacity:0;transition:opacity .9s ease}
+.doorway .frame.rotate img.on{opacity:1}
 .doorway .wall{position:absolute;top:12px;right:6px;writing-mode:vertical-rl;font-size:15px;z-index:1;background:var(--pages);color:var(--bark);padding:6px 2px}
 .missing{display:grid;place-items:center}
 .missing img,.more .ph.missing img{display:none}
@@ -175,6 +179,15 @@ dl.facts dd{margin:0}
 .gallery > figure{--r:4/3;flex:calc(var(--r) * 100) 1 calc(var(--r) * 200px);min-width:0;margin:0}
 .gallery img,.gallery video{width:100%;height:auto}
 .gallery .video{width:100%}
+/* .big = larger portrait photos, two per row at every screen size (rows stay even, no lone photo at the end
+   when the count is even) */
+.gallery.big > figure{flex-basis:calc(var(--r) * min(560px, 52vw))}
+/* video rows: .reels = vertical videos side by side, .pairs = two wide videos per row (one on phones) */
+.gallery.reels > figure{flex:1 1 calc(25% - 6px)}
+.gallery.pairs > figure{flex:1 1 calc(50% - 4px)}
+@media (max-width:640px){.gallery.reels > figure{flex-basis:calc(50% - 4px)}.gallery.pairs > figure{flex-basis:100%}}
+.flow > .gallery:has(+ .gallery){margin-bottom:8px}   /* galleries one after another sit 8px apart */
+.flow > h2 + .gallery{margin-top:12px}               /* a section heading stays close to its photos */
 .flow .gallery .clip video{max-height:none}
 .flow td{padding:2px 12px 2px 0;vertical-align:top}
 

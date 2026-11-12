@@ -21,7 +21,10 @@ index.html       the landing page has its own colours at the top of its <style>:
                  If you change those, update --head-* and --foot-* in site.css to match.
 media.js         on work / writings / workshops pages: click a photo to see it larger (only photos
                  that would actually get bigger), and the moshing photo sequences
-                 (<div class="gallery erode">; add data-mode="fade" for a plain cross-fade).
+                 (<div class="gallery erode">; add data-mode="fade" for a plain cross-fade, data-mode="cut" for no effect),
+                 and rotating main photos (<div class="frame rotate"> with several <img>, see works/freelance.html).
+                 Video rows: <div class="gallery reels"> (vertical videos side by side) and
+                 <div class="gallery pairs"> (two wide videos per row).
 
 PHOTOS
 images/<slug>.jpg              the PREVIEW photo: landing-page room hover and archive hover.
